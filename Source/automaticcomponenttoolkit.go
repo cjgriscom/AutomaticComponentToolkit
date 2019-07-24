@@ -250,7 +250,7 @@ func createComponent(component ComponentDefinition, outfolderBase string) (error
 					return err
 				}
 
-				err = BuildBindingPascalDynamic(component, outputFolderBindingPascal, outputFolderExamplePascal, indentString)
+				err = BuildBindingPascal(component, outputFolderBindingPascal, outputFolderExamplePascal, indentString)
 				if err != nil {
 					return err
 				}
