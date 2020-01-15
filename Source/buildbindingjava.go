@@ -362,7 +362,7 @@ func buildJavaClass(component ComponentDefinition, w LanguageWriter, indent stri
 	w.Writeln("import com.sun.jna.Memory;")
 	w.Writeln("import com.sun.jna.Native;")
 	w.Writeln("import com.sun.jna.Pointer;")
-	w.Writeln("import java.lang.ref.Cleaner;")
+	w.Writeln("import sun.misc.Cleaner;")
 	w.Writeln("")
 	for _, subComponent := range(component.ImportedComponentDefinitions) {
 		w.Writeln("import %s.*;", strings.ToLower(subComponent.NameSpace))
@@ -384,7 +384,7 @@ func buildJavaClass(component ComponentDefinition, w LanguageWriter, indent stri
 		w.Writeln("")		
 	}
 	if component.isBaseClass(class) {
-		w.Writeln("  protected static final Cleaner mCleaner = Cleaner.create();")
+		w.Writeln("  protected static Cleaner mCleaner;")
 		w.Writeln("")
 		w.Writeln("  protected Pointer mHandle;")
 		w.Writeln("")
@@ -396,7 +396,7 @@ func buildJavaClass(component ComponentDefinition, w LanguageWriter, indent stri
 	if component.isBaseClass(class) {
 		w.Writeln("    mHandle = handle;")
 		w.Writeln("    mWrapper = wrapper;")
-		w.Writeln("    mCleaner.register(this, new InstanceReleaser(this));")
+		w.Writeln("    mCleaner = Cleaner.create(this, new InstanceReleaser(this));")
 	} else {
 		w.Writeln("    super(wrapper, handle);")
 	}
